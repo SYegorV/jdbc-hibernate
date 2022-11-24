@@ -11,31 +11,40 @@ public class UserDaoJDBCImpl implements UserDao {
     public UserDaoJDBCImpl() {
     }
 
-    public void createUsersTable() {
+    public void createUsersTable() throws SQLException { //
+        conn.setAutoCommit(false); //
         try (Statement statement = conn.createStatement()) {
             statement.executeUpdate("create table if not exists table_users " +
                     "(id bigint primary key auto_increment, name char(255), last_name char(255), age int)");
+            conn.commit(); //
         } catch (SQLException e) {
             e.printStackTrace();
+            conn.rollback(); //
         }
     }
 
-    public void dropUsersTable() {
+    public void dropUsersTable() throws SQLException { //
+        conn.setAutoCommit(false); //
         try (Statement statement = conn.createStatement()) {
             statement.executeUpdate("drop table if exists table_users");
+            conn.commit(); //
         } catch (SQLException e) {
             e.printStackTrace();
+            conn.rollback(); //
         }
     }
 
-    public void saveUser(String name, String lastName, byte age) {
+    public void saveUser(String name, String lastName, byte age) throws SQLException {
+        conn.setAutoCommit(false); //
         try (PreparedStatement pstm = conn.prepareStatement("insert into table_users (name, last_name, age) values (?, ?, ?)")) {
             pstm.setString(1, name);
             pstm.setString(2, lastName);
             pstm.setByte(3, age);
             pstm.executeUpdate();
+            conn.commit(); //
         } catch (SQLException e) {
             e.printStackTrace();
+            conn.rollback(); //
         }
     }
 
