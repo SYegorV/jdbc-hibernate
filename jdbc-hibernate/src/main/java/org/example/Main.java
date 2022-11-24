@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class Main {
     private final static UserService userService = new UserServiceImpl();
 
-    public static void main(String[] args) throws  SQLException { // ClassNotFoundException,
+    public static void main(String[] args) throws  SQLException {
 
         userService.createUsersTable(); //
         userService.saveUser("catherine", "bell", (byte) 24); //
