@@ -21,6 +21,7 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
             conn.rollback(); //
         }
+        conn.setAutoCommit(true); //
     }
 
     public void dropUsersTable() throws SQLException { //
@@ -32,6 +33,7 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
             conn.rollback(); //
         }
+        conn.setAutoCommit(true); //
     }
 
     public void saveUser(String name, String lastName, byte age) throws SQLException {
@@ -46,15 +48,20 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
             conn.rollback(); //
         }
+        conn.setAutoCommit(true); //
     }
 
-    public void removeUserById(long id) {
+    public void removeUserById(long id) throws SQLException {
+        conn.setAutoCommit(false); //
         try (PreparedStatement pstm = conn.prepareStatement("delete from table_users where id = ?")) {
             pstm.setLong(1, id);
             pstm.executeUpdate();
+            conn.commit(); //
         } catch (SQLException e) {
             e.printStackTrace();
+            conn.rollback(); //
         }
+        conn.setAutoCommit(true); //
     }
 
     public List<User> getAllUsers() {
@@ -72,11 +79,15 @@ public class UserDaoJDBCImpl implements UserDao {
         return users;
     }
 
-    public void cleanUsersTable() {
+    public void cleanUsersTable() throws SQLException {
+        conn.setAutoCommit(false); //
         try (Statement statement = conn.createStatement()) {
             statement.executeUpdate("truncate table table_users");
+            conn.commit(); //
         } catch (SQLException e) {
             e.printStackTrace();
+            conn.rollback(); //
         }
+        conn.setAutoCommit(true); //
     }
 }

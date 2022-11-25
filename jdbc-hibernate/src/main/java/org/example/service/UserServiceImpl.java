@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
         System.out.println("User with name – " + name + " add in database");
     }
 
-    public void removeUserById(long id) {
+    public void removeUserById(long id) throws SQLException { //
         userDao.removeUserById(id);
     }
 
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
-    public void cleanUsersTable() {
+    public void cleanUsersTable() throws SQLException { //
         userDao.cleanUsersTable();
     }
 }
